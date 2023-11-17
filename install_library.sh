@@ -64,10 +64,10 @@ else
 fi
 
 # install ros
-tmp=$(rosversion -d)
+tmp=$(find /opt -name ros)
 echo ""
 echo $tmp
-if [ $tmp="noetic" ]; then
+if [[ "$tmp" == *noetic* ]]; then
     echo ""
     echo "ros noetic was installed successully!"
 else
