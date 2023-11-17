@@ -15,7 +15,24 @@ fi
 
 sudo apt-get install cmake g++ gcc && \
     # install gsl
-    sudo apt install libgsl-dev 
+    sudo apt install libgsl-dev && \
+        sh ./install_tools.sh
+
+echo "
+# Source in China 
+deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+" >> /etc/apt/sources.list
+apt-get update -y && apt-get upgrade -y
+
 
 ### install necessary libraries
 # install osg
@@ -30,6 +47,7 @@ else
 
     if [ -e $AMBOT ]; then
         cd $AMBOT && git submodule init &&  git submodule update
+        sudo apt-get install openscenegraph
         sudo apt-get build-dep openscenegraph
         cd $AMBOT/tools/osg
         #git clone https://github.com/openscenegraph/osg
@@ -38,7 +56,8 @@ else
         sudo make install
     else
         echo "download osg at $HOME path"
-
+        sudo apt-get install openscenegraph
+        sudo apt-get build-dep openscenegraph
         cd ${HOME} && git clone https://github.com/openscenegraph/OpenSceneGraph.git && cd osg && \
             mkdir build && cd build && cmake .. && make && sudo make install
     fi
