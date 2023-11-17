@@ -4,7 +4,11 @@ sleep 1
 
 if [ ! -e $AMBOT ]; then
     echo "AMBOT env was not found, please install ambot and set env: AMBOT by adding setuyp.sh in your shell config (e.g., ~/.bashrc or ~/.zshrc)"
-    exit -1
+
+    echo "or "
+    echo "libraries will be installed on ${HOME} path"
+    echo ""
+
 else
     echo "ambot was installed, now start to install necessary libraries....."
 fi
@@ -24,17 +28,25 @@ else
     echo ""
     echo "start to install osg..."
 
-    cd $AMBOT && git submodule init &&  git submodule update
-    sudo apt-get build-dep openscenegraph
-    cd $AMBOT/tools/osg
-    #git clone https://github.com/openscenegraph/osg
-    mkdir build
-    cd build && cmake .. && make 
-    sudo make install
+    if [ -e $AMBOT ]; then
+        cd $AMBOT && git submodule init &&  git submodule update
+        sudo apt-get build-dep openscenegraph
+        cd $AMBOT/tools/osg
+        #git clone https://github.com/openscenegraph/osg
+        mkdir build
+        cd build && cmake .. && make 
+        sudo make install
+    else
+        echo "download osg at $HOME path"
+
+        cd ${HOME} && git clone https://github.com/openscenegraph/OpenSceneGraph.git && cd osg && \
+            mkdir build && cd build && cmake .. && make && sudo make install
+    fi
 fi
 
 # install ros
 tmp=$(rosversion -d)
+echo ""
 echo $tmp
 if [ $tmp="noetic" ]; then
     echo ""
@@ -61,12 +73,19 @@ else
 
     echo ""
     echo "start to install qpOASES!"
-    #https://github.com/coin-or/qpOASES.git
-    cd $AMBOT && git submodule init && git submodule update
-    cd $AMBOT/tools/qpOASES && git pull origin
-    mkdir build && cd build
-    cmake ..
-    sudo make install
+    if [ -e $AMBOT ]; then
+        #https://github.com/coin-or/qpOASES.git
+        cd $AMBOT && git submodule init && git submodule update
+        cd $AMBOT/tools/qpOASES && git pull origin
+        mkdir build && cd build
+        cmake ..
+        sudo make install
+    else
+
+        cd ${HOME} && git clone https://github.com/coin-or/qpOASES.git &&  cd qpOASES && \
+            mkdir build && cd build && cmake .. && make && sudo make install
+
+    fi
 fi
 
 # install Eigen
@@ -80,12 +99,19 @@ else
 
     echo ""
     echo "Start to install Eigen!"
-    #https://github.com/eigenteam/eigen-git-mirror
-    cd $AMBOT && git submodule init && git submodule update
-    cd $AMBOT/tools/eigen-git-mirror && git pull origin
-    mkdir build && cd build
-    cmake ..
-    sudo make install
+    if [ -e $AMBOT ]; then
+        #https://github.com/eigenteam/eigen-git-mirror
+        cd $AMBOT && git submodule init && git submodule update
+        cd $AMBOT/tools/eigen-git-mirror && git pull origin
+        mkdir build && cd build
+        cmake ..
+        sudo make install
+    else
+
+        cd ${HOME} && git clone https://github.com/eigenteam/eigen-git-mirror && cd eigen-git-mirror && \
+            mkdir build && cd build && cmake .. && make && sudo make install
+
+    fi
 fi
 
 echo "Congra... Installation Done!"
