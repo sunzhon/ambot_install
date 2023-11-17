@@ -19,9 +19,9 @@ sudo apt-get install cmake g++ gcc && \
 
 ### install necessary libraries
 # install osg
-tmp=$(osgversion)
+tmp=$(find /usr/local/include -name osg)
 echo $tmp
-if [[ "${tmp}" == OpenSceneGraph* ]]; then
+if [[ "${tmp}" == *osg ]]; then
     echo ""
     echo "osg had been installed successfully!"
 else
