@@ -15,6 +15,10 @@ sudo make install
 # install gsl
 sudo apt install libgsl-dev
 
+
+# install ros
+sudo sh ./install_ros.sh
+
 # install ros serial 
 sudo apt install ros-$(rosversion -d)-serial
 # install workebnce of dynamixel servos
@@ -36,9 +40,6 @@ cd $AMBOT/tools/eigen-git-mirror && git pull origin
 mkdir build && cd build
 cmake ..
 sudo make install
-
-
-
 
 #  add rules of usb
 echo "please add U2D2 in your rules at /etc/udev/rules.d/"
