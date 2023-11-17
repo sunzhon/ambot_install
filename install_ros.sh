@@ -36,3 +36,11 @@ wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install python3-catkin-tools
 
+
+# install ros serial 
+sudo apt install ros-$(rosversion -d)-serial && \
+# install workebnce of dynamixel servos
+sudo apt-get install ros-$(rosversion -d)-dynamixel-workbench && \
+echo "Install complete"
+
+
