@@ -81,6 +81,38 @@ sudo apt install ros-$(rosversion -d)-serial
 # install workebnce of dynamixel servos
 sudo apt-get install ros-$(rosversion -d)-dynamixel-workbench
 
+
+cd $HOME && git clone https://github.com/ROBOTIS-GIT/DynamixelSDK.git && \
+    cd DynamixelSDK/c++/build/linux64/ && make && sudo make install
+
+
+
+# install dynamixel sdk
+tmp=$(find /usr/local/include -name "dynamixel_sdk")
+echo ""
+echo $tmp
+if [[ "$tmp" == *DynamixelSDK* ]]; then
+    echo ""
+    echo "DynamixelSDK has been installed successfully!"
+else
+
+    echo ""
+    echo "start to install DynamixelSDK!"
+    if [ -e $AMBOT ]; then
+        #https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+        cd $AMBOT && git submodule init && git submodule update
+        cd $AMBOT/tools/DynamixelSDK && git pull origin
+        cd DynamixelSDK/c++/build/linux64/ && make && sudo make install
+    else
+        cd $HOME && git clone https://github.com/ROBOTIS-GIT/DynamixelSDK.git && \
+            cd DynamixelSDK/c++/build/linux64/ && make && sudo make install
+
+    fi
+fi
+
+
+
+
 # install qpsolver
 tmp=$(find /usr/local/include -name "qpOASES")
 echo ""
